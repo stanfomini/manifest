@@ -17,7 +17,7 @@
 
   <script>
     // Your VAPID public key
-    const publicKey = 'BE0uJ0rFg5pyGNDL8CowduQEwOg-yDRA82g9vAWC6G4RzsJQeOF2lMMKoo3MbGygGf0MgGtQIDX6x4GT3yi3PYA';
+    const publicKey = 'BE0uJ0rFg5pyGNDL8CowduQEwOg-yDRA82g9vAWC6G4RzsJQeOF2lMMKoo3MbGygGf0MgGtQIDX6x4GT3yi3PYA'; // Replace with your actual VAPID public key
 
     // Register the service worker from GitHub Pages
     if ('serviceWorker' in navigator) {
@@ -56,26 +56,38 @@
               console.log('User is subscribed:', subscription);
 
               // Send subscription to Google Apps Script API
-              fetch('https://script.google.com/macros/s/AKfycbz6aTTOBMeijrByO88YdK-o8TMyd8eaVB17cAIeBJPBmfiKnKYGXBqhMXrjeHm5lIeZIA/exec?action=saveSubscription', {
+              fetch('https://script.google.com/macros/s/AKfycbw3IKfCkbHWEqtEfJUQXyp4HtvgiH6Ld0_oUW74GK0z0eJTVfBnv_spGvCdhOj1ar54Dw/exec?action=saveSubscription', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(subscription)
-              }).then(response => response.json())
+              })
+                .then(response => response.json())
                 .then(data => console.log('Subscription saved:', data))
                 .catch(error => console.error('Error saving subscription:', error));
             })
             .catch(function (error) {
               console.error('Failed to subscribe the user:', error);
             });
-        });
       } else {
         console.warn('Push messaging is not supported');
       }
     });
+
+    // Example function to use proxy request (for any other third-party interaction)
+    function proxyExample(targetUrl, data) {
+      fetch('https://script.google.com/macros/s/AKfycbw3IKfCkbHWEqtEfJUQXyp4HtvgiH6Ld0_oUW74GK0z0eJTVfBnv_spGvCdhOj1ar54Dw/exec?action=proxyRequest&url=' + encodeURIComponent(targetUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(data => console.log('Proxy request successful:', data))
+        .catch(error => console.error('Error with proxy request:', error));
+    }
   </script>
 </body>
 </html>
-
-
